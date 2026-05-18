@@ -1,109 +1,119 @@
-import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'Entity/Product.dart';
 
 void main() {
-  while (true) {
-    print("""
-======== PRODUCT MANAGER ========
-1. Hien thi danh sach
-2. Them san pham
-3. Xoa san pham
-4. Sua san pham
-5. Tim kiem
-6. Sap xep tang
-7. Sap xep giam
-0. Thoat
-=================================
-""");
 
-    stdout.write("Chon: ");
-    String? choice = stdin.readLineSync();
+  print("========== DANH SÁCH PRODUCTS ==========");
+  Product.showAllProduct();
 
-    switch (choice) {
-      case "1":
-        Product.showAllProduct();
-        break;
 
-      case "2":
-        addProductUI();
-        break;
+  /// Thêm product
+  print("\n========== THÊM PRODUCT ==========");
 
-      case "3":
-        deleteProductUI();
-        break;
+  Product.add(
+    Product(
+      id: "06",
+      name: "San pham F",
+      image: "Hinhanh6.png",
+      price: 25.5,
+    ),
+  );
 
-      case "4":
-        updateProductUI();
-        break;
+  Product.showAllProduct();
 
-      case "5":
-        searchProductUI();
-        break;
 
-      case "6":
-        Product.sortAsc();
-        break;
+  /// Cập nhật product
+  print("\n========== UPDATE PRODUCT ==========");
 
-      case "7":
-        Product.sortDesc();
-        break;
+  Product.update(
+    "02",
+    newName: "San pham B Updated",
+    newPrice: 99.9,
+  );
 
-      case "0":
-        print("Tam biet!");
-        return;
+  Product.showAllProduct();
 
-      default:
-        print("Lua chon khong hop le!");
-    }
+
+  /// Xóa product
+  print("\n========== DELETE PRODUCT ==========");
+
+  Product.delete("03");
+
+  Product.showAllProduct();
+
+
+  /// Tìm kiếm product
+  print("\n========== SEARCH PRODUCT ==========");
+
+  Product.search("san pham");
+
+
+  /// Sắp xếp giá tăng dần
+  print("\n========== SORT ASC ==========");
+
+  Product.sortAsc();
+  Product.showAllProduct();
+
+
+  /// Sắp xếp giá giảm dần
+  print("\n========== SORT DESC ==========");
+
+  Product.sortDesc();
+  Product.showAllProduct();
+
+
+  print("\nDone");
+}
+
+
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CounterPage(),
+    );
   }
 }
 
+class CounterPage extends StatefulWidget {
+  const CounterPage({super.key});
 
-
-void addProductUI() {
-  stdout.write("ID: ");
-  String id = stdin.readLineSync()!;
-
-  stdout.write("Name: ");
-  String name = stdin.readLineSync()!;
-
-  stdout.write("Image: ");
-  String image = stdin.readLineSync()!;
-
-  stdout.write("Price: ");
-  double price = double.parse(stdin.readLineSync()!);
-
-  Product.add(
-      Product(id: id, name: name, image: image, price: price));
+  @override
+  State<CounterPage> createState() => _CounterPageState();
 }
 
-void updateProductUI() {
-  stdout.write("Nhap ID can sua: ");
-  String id = stdin.readLineSync()!;
+class _CounterPageState extends State<CounterPage> {
+  int count = 0;
 
-  stdout.write("Name moi: ");
-  String name = stdin.readLineSync()!;
+  void increase() {
+    setState(() {
+      count++;
+    });
+  }
 
-  stdout.write("Image moi: ");
-  String image = stdin.readLineSync()!;
-
-  stdout.write("Price moi: ");
-  double price = double.parse(stdin.readLineSync()!);
-
-  Product.update(
-      id,
-      Product(id: id, name: name, image: image, price: price));
-}
-
-void deleteProductUI() {
-  stdout.write("Nhap ID can xoa: ");
-  String id = stdin.readLineSync()!;
-  Product.delete(id);
-}
-
-void searchProductUI() {
-  stdout.write("Nhap tu khoa: ");
-  String keyword = stdin.readLineSync()!;
-  Product.search(keyword);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Hello Flutter 🚀"),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Text(
+          "Count: $count",
+          style: const TextStyle(fontSize: 30),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: increase,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
 }
