@@ -1,10 +1,8 @@
-import 'dart:io';
-
 class Product {
-  String id;
-  String name;
-  String image;
-  double price;
+  final String id;
+  final String name;
+  final String image;
+  final double price;
 
   Product({required this.id, this.name = "", this.image = "", this.price = 0});
 
@@ -19,21 +17,20 @@ class Product {
 
   // Danh sách các product
   static List<Product> products = [
-    Product(id: "01", name: "San pham A", image: "Hinh anh 1", price: 10.2),
-    Product(id: "02", name: "San pham B", image: "Hinh anh 2", price: 20.1),
-    Product(id: "03", name: "San pham C", image: "Hinh anh 3", price: 15.8),
-    Product(id: "04", name: "San pham D", image: "Hinh anh 4", price: 11.4),
-    Product(id: "05", name: "San pham E", image: "Hinh anh 5", price: 19.5),
+    Product(id: "01", name: "San pham A", image: "Hinhanh1.png", price: 10.2),
+    Product(id: "02", name: "San pham B", image: "Hinhanh2.png", price: 20.1),
+    Product(id: "03", name: "San pham C", image: "Hinhanh3.png", price: 15.8),
+    Product(id: "04", name: "San pham D", image: "Hinhanh4.png", price: 11.4),
+    Product(id: "05", name: "San pham E", image: "Hinhanh5.png", price: 19.5),
   ];
 
   // Hiển thị product
-  static List<Product> showAllProduct() {
+  static void showAllProduct() {
     for (var p in products) {
       print(
         "ID: ${p.id} | Name: ${p.name}, Image: ${p.image}, Price: ${p.price}",
       );
     }
-    return products;
   }
 
   //Thêm product
@@ -41,31 +38,43 @@ class Product {
     bool existed = products.any((e) => e.id == p.id);
 
     if (existed) {
-      print("ID da ton tai!");
+      print("ID này đã tồn tại. Vui lòng nhập ID mới: ");
       return;
     }
 
     products.add(p);
-    print("Them thanh cong!");
+    print("Thêm product thành công!");
   }
 
   // Sửa product
-  static void update(String id, Product newProduct) {
-    int index = products.indexWhere((p) => p.id == id);
+  static void update(
+      String id,
+      {String? newName,
+        String? newImage,
+        double? newPrice}
+      ) {
+    for (int i = 0; i < products.length; i++) {
+      if (products[i].id == id) {
 
-    if (index == -1) {
-      print("Khong tim thay!");
-      return;
+        products[i] = Product(
+          id: products[i].id,
+          name: newName ?? products[i].name,
+          image: newImage ?? products[i].image,
+          price: newPrice ?? products[i].price,
+        );
+
+        print("Update thành công!");
+        return;
+      }
     }
 
-    products[index] = newProduct;
-    print("Cap nhat thanh cong!");
+    print("Không tìm thấy product!");
   }
 
   // Xóa product
   static void delete(String id) {
     products.removeWhere((p) => p.id == id);
-    print("Da xoa!");
+    print("Xóa thành công product có ID là ${id}!");
   }
 
   // Tìm kiếm product theo name
@@ -75,7 +84,7 @@ class Product {
         .toList();
 
     if (result.isEmpty) {
-      print("Khong tim thay!");
+      print("Không tìm thấy product cần sửa!");
       return;
     }
 
@@ -84,13 +93,13 @@ class Product {
 
   // Sắp xếp product theo giá tăng
   static void sortAsc() {
+    print("Bảng giá các product tăng dần: \n");
     products.sort((a, b) => a.price.compareTo(b.price));
-    print("Da sap xep tang!");
   }
 
   // Sắp xếp product theo giá giảm
   static void sortDesc() {
+    print("Bảng giá các product giảm dần: \n");
     products.sort((a, b) => b.price.compareTo(a.price));
-    print("Da sap xep giam!");
   }
 }
