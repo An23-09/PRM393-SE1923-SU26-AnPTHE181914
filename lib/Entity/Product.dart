@@ -28,7 +28,7 @@ class Product {
   static void showAllProduct() {
     for (var p in products) {
       print(
-        "ID: ${p.id} | Name: ${p.name}, Image: ${p.image}, Price: ${p.price}",
+        "ID: ${p.id} | Name: ${p.name}| Image: ${p.image}| Price: ${p.price}",
       );
     }
   }
