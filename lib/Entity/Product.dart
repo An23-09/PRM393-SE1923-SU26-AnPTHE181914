@@ -15,6 +15,11 @@ class Product {
     );
   }
 
+  @override
+  String toString() {
+    return "ID: $id | Name: $name | Image: $image | Price: $price";
+  }
+
   // Danh sách các product
   static List<Product> products = [
     Product(id: "01", name: "San pham A", image: "Hinhanh1.png", price: 10.2),
@@ -84,7 +89,7 @@ class Product {
         .toList();
 
     if (result.isEmpty) {
-      print("Không tìm thấy product cần sửa!");
+      print("Không tìm thấy product cần tìm!");
       return;
     }
 
@@ -101,5 +106,10 @@ class Product {
   static void sortDesc() {
     print("Bảng giá các product giảm dần: \n");
     products.sort((a, b) => b.price.compareTo(a.price));
+  }
+
+  // CHECK ID TỒN TẠI
+  static bool isIdExist(String id) {
+    return products.any((p) => p.id == id);
   }
 }
