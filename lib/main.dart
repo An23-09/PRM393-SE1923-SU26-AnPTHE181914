@@ -1,119 +1,107 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
 
 import 'Entity/Product.dart';
 
+
 void main() {
+  while (true) {
+    print("\n========= PRODUCT MANAGEMENT =========");
+    print("1. Hiển thị danh sách product");
+    print("2. Thêm product");
+    print("3. Sửa product");
+    print("4. Xóa product");
+    print("5. Tìm kiếm product");
+    print("6. Sắp xếp giá tăng");
+    print("7. Sắp xếp giá giảm");
+    print("0. Thoát");
+    stdout.write("Chọn chức năng: ");
 
-  print("========== DANH SÁCH PRODUCTS ==========");
-  Product.showAllProduct();
+    String? choice = stdin.readLineSync();
 
+    switch (choice) {
+      case "1":
+        Product.showAllProduct();
+        break;
 
-  /// Thêm product
-  print("\n========== THÊM PRODUCT ==========");
+    // ===== ADD =====
+      case "2":
+        stdout.write("Nhập ID: ");
+        String id = stdin.readLineSync()!;
 
-  Product.add(
-    Product(
-      id: "06",
-      name: "San pham F",
-      image: "Hinhanh6.png",
-      price: 25.5,
-    ),
-  );
+        stdout.write("Nhập Name: ");
+        String name = stdin.readLineSync()!;
 
-  Product.showAllProduct();
+        stdout.write("Nhập Image: ");
+        String image = stdin.readLineSync()!;
 
+        stdout.write("Nhập Price: ");
+        double price = double.parse(stdin.readLineSync()!);
 
-  /// Cập nhật product
-  print("\n========== UPDATE PRODUCT ==========");
+        Product.add(
+          Product(
+            id: id,
+            name: name,
+            image: image,
+            price: price,
+          ),
+        );
+        break;
 
-  Product.update(
-    "02",
-    newName: "San pham B Updated",
-    newPrice: 99.9,
-  );
+    // ===== UPDATE =====
+      case "3":
+        stdout.write("Nhập ID cần sửa: ");
+        String id = stdin.readLineSync()!;
 
-  Product.showAllProduct();
+        stdout.write("Name mới (Enter để bỏ qua): ");
+        String? name = stdin.readLineSync();
 
+        stdout.write("Image mới (Enter để bỏ qua): ");
+        String? image = stdin.readLineSync();
 
-  /// Xóa product
-  print("\n========== DELETE PRODUCT ==========");
+        stdout.write("Price mới (Enter để bỏ qua): ");
+        String? priceInput = stdin.readLineSync();
 
-  Product.delete("03");
+        Product.update(
+          id,
+          newName: name!.isEmpty ? null : name,
+          newImage: image!.isEmpty ? null : image,
+          newPrice:
+          priceInput!.isEmpty ? null : double.parse(priceInput),
+        );
+        break;
 
-  Product.showAllProduct();
+    // ===== DELETE =====
+      case "4":
+        stdout.write("Nhập ID cần xóa: ");
+        String id = stdin.readLineSync()!;
+        Product.delete(id);
+        break;
 
+    // ===== SEARCH =====
+      case "5":
+        stdout.write("Nhập tên cần tìm: ");
+        String keyword = stdin.readLineSync()!;
+        Product.search(keyword);
+        break;
 
-  /// Tìm kiếm product
-  print("\n========== SEARCH PRODUCT ==========");
+    // ===== SORT ASC =====
+      case "6":
+        Product.sortAsc();
+        Product.showAllProduct();
+        break;
 
-  Product.search("san pham");
+    // ===== SORT DESC =====
+      case "7":
+        Product.sortDesc();
+        Product.showAllProduct();
+        break;
 
+      case "0":
+        print("Thoát chương trình...");
+        return;
 
-  /// Sắp xếp giá tăng dần
-  print("\n========== SORT ASC ==========");
-
-  Product.sortAsc();
-  Product.showAllProduct();
-
-
-  /// Sắp xếp giá giảm dần
-  print("\n========== SORT DESC ==========");
-
-  Product.sortDesc();
-  Product.showAllProduct();
-
-
-  print("\nDone");
-}
-
-
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CounterPage(),
-    );
-  }
-}
-
-class CounterPage extends StatefulWidget {
-  const CounterPage({super.key});
-
-  @override
-  State<CounterPage> createState() => _CounterPageState();
-}
-
-class _CounterPageState extends State<CounterPage> {
-  int count = 0;
-
-  void increase() {
-    setState(() {
-      count++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Hello Flutter 🚀"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          "Count: $count",
-          style: const TextStyle(fontSize: 30),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: increase,
-        child: const Icon(Icons.add),
-      ),
-    );
+      default:
+        print("Lựa chọn không hợp lệ!");
+    }
   }
 }
