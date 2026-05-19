@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'Entity/Product.dart';
 
 
@@ -27,6 +26,10 @@ void main() {
       case "2":
         stdout.write("Nhập ID: ");
         String id = stdin.readLineSync()!;
+        if (Product.isIdExist(id)) {
+          print("ID đã tồn tại! Không thể thêm.");
+          break;
+        }
 
         stdout.write("Nhập Name: ");
         String name = stdin.readLineSync()!;
@@ -51,6 +54,10 @@ void main() {
       case "3":
         stdout.write("Nhập ID cần sửa: ");
         String id = stdin.readLineSync()!;
+        if (!Product.isIdExist(id)) {
+          print("ID không tồn tại! Không thể cập nhật.");
+          break;
+        }
 
         stdout.write("Name mới (Enter để bỏ qua): ");
         String? name = stdin.readLineSync();
@@ -74,6 +81,10 @@ void main() {
       case "4":
         stdout.write("Nhập ID cần xóa: ");
         String id = stdin.readLineSync()!;
+        if (!Product.isIdExist(id)) {
+          print("ID không tồn tại! Không thể xóa.");
+          break;
+        }
         Product.delete(id);
         break;
 
